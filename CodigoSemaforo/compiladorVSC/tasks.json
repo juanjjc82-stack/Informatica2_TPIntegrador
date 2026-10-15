@@ -1,0 +1,92 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar init.c",
+            "type": "shell",
+            "command": "avr-gcc",
+            "args": [
+                "-mmcu=atmega128",
+                "-DF_CPU=16000000UL",
+                "-Os",
+                "-Wall",
+                "-Wextra",
+                "-c",
+                "init.c",
+                "-o",
+                "init.o"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "Compilar main.c",
+            "type": "shell",
+            "command": "avr-gcc",
+            "args": [
+                "-mmcu=atmega128",
+                "-DF_CPU=16000000UL",
+                "-Os",
+                "-Wall",
+                "-Wextra",
+                "-c",
+                "main.c",
+                "-o",
+                "main.o"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "Generar ELF",
+            "type": "shell",
+            "command": "avr-gcc",
+            "args": [
+                "-mmcu=atmega128",
+                "-DF_CPU=16000000UL",
+                "-Os",
+                "init.o",
+                "main.o",
+                "-o",
+                "programa.elf"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "Generar HEX",
+            "type": "shell",
+            "command": "avr-objcopy",
+            "args": [
+                "-O",
+                "ihex",
+                "-R",
+                ".eeprom",
+                "programa.elf",
+                "programa.hex"
+            ],
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Compilar proyecto AVR",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Compilar init.c",
+                "Compilar main.c",
+                "Generar ELF",
+                "Generar HEX"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
